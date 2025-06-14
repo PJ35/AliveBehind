@@ -1,0 +1,96 @@
+[gd_scene load_steps=9 format=3 uid="uid://bp6qcekcgrr3m"]
+
+[ext_resource type="Texture2D" uid="uid://gvo5k0g6q8cl" path="res://Assets/rolnik_all.png" id="1_86ood"]
+[ext_resource type="Script" uid="uid://vh4fblnr1xy6" path="res://peasant.gd" id="1_l8u7e"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rskbl"]
+radius = 46.0109
+
+[sub_resource type="Animation" id="Animation_l8u7e"]
+resource_name = "walking"
+length = 2.0
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+}
+
+[sub_resource type="Animation" id="Animation_v6thc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="Animation" id="Animation_qkl1a"]
+resource_name = "attacking"
+length = 1.2
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [25, 26, 27, 28, 29, 30]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3rt0r"]
+_data = {
+&"RESET": SubResource("Animation_v6thc"),
+&"attacking": SubResource("Animation_qkl1a"),
+&"walking": SubResource("Animation_l8u7e")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l8u7e"]
+radius = 63.0
+
+[node name="Peasant" type="CharacterBody2D" groups=["peasants"]]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_l8u7e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rskbl")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Sprite2D")
+libraries = {
+&"": SubResource("AnimationLibrary_3rt0r")
+}
+autoplay = "walking"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_86ood")
+hframes = 23
+vframes = 2
+frame = 2
+
+[node name="Detect" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detect"]
+shape = SubResource("CircleShape2D_l8u7e")
