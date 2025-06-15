@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dt0wmjuu7yd7r"]
+[gd_scene load_steps=9 format=3 uid="uid://dt0wmjuu7yd7r"]
 
 [ext_resource type="Texture2D" uid="uid://b61i746ocooxt" path="res://Assets/house.png" id="1_05mvd"]
 [ext_resource type="Script" uid="uid://bv3hnhg607che" path="res://peasant_building.gd" id="2_rgbn5"]
@@ -9,6 +9,44 @@ size = Vector2(32, 18)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7eq3h"]
 size = Vector2(28, 8)
+
+[sub_resource type="Animation" id="Animation_7eq3h"]
+resource_name = "building"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.9, 1), Vector2(1, 1), Vector2(1, 0.9)]
+}
+
+[sub_resource type="Animation" id="Animation_dvfec"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_c3gaj"]
+_data = {
+&"RESET": SubResource("Animation_dvfec"),
+&"building": SubResource("Animation_7eq3h")
+}
 
 [node name="PeasantBuilding" type="Sprite2D"]
 texture = ExtResource("1_05mvd")
@@ -32,10 +70,24 @@ disabled = true
 position = Vector2(-8, 24)
 
 [node name="SpawnTimer" type="Timer" parent="."]
-autostart = true
+wait_time = 8.0
 
 [node name="BuildingMode" parent="." node_paths=PackedStringArray("parent_building") instance=ExtResource("3_7eq3h")]
 building_area = Rect2(0, 0, 32, 32)
 parent_building = NodePath("..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../ProgressBar")
+libraries = {
+&"": SubResource("AnimationLibrary_c3gaj")
+}
+autoplay = "RESET"
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -16.0
+offset_top = -18.0
+offset_right = 16.0
+offset_bottom = -14.0
+show_percentage = false
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
