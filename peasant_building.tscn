@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://dt0wmjuu7yd7r"]
+
+[ext_resource type="Texture2D" uid="uid://b61i746ocooxt" path="res://Assets/house.png" id="1_05mvd"]
+[ext_resource type="Script" uid="uid://bv3hnhg607che" path="res://peasant_building.gd" id="2_rgbn5"]
+[ext_resource type="PackedScene" uid="uid://bn4msd3lp00kx" path="res://building_mode.tscn" id="3_7eq3h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rgbn5"]
+size = Vector2(32, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7eq3h"]
+size = Vector2(28, 8)
+
+[node name="PeasantBuilding" type="Sprite2D"]
+texture = ExtResource("1_05mvd")
+script = ExtResource("2_rgbn5")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 5
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 7)
+shape = SubResource("RectangleShape2D_rgbn5")
+disabled = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(2, -6)
+shape = SubResource("RectangleShape2D_7eq3h")
+disabled = true
+
+[node name="SpawnPosition" type="Node2D" parent="."]
+position = Vector2(-8, 24)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="BuildingMode" parent="." node_paths=PackedStringArray("parent_building") instance=ExtResource("3_7eq3h")]
+building_area = Rect2(0, 0, 32, 32)
+parent_building = NodePath("..")
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

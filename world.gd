@@ -4,6 +4,8 @@ var dragging = false
 var drag_start = Vector2.ZERO
 var select_rect = RectangleShape2D.new()
 var selected = []
+var has_building = false
+@onready var building_scene = preload("res://peasant_building.tscn")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -31,6 +33,12 @@ func _unhandled_input(event: InputEvent) -> void:
 				item.collider.selected = true
 	if event is InputEventMouseMotion and dragging:
 		queue_redraw()
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("add_building") && !has_building:
+		var building = building_scene.instantiate()
+		has_building = true
+		add_child(building)
 
 func _draw() -> void:
 	if dragging:
