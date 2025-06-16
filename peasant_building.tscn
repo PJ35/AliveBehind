@@ -1,14 +1,29 @@
 [gd_scene load_steps=9 format=3 uid="uid://dt0wmjuu7yd7r"]
 
-[ext_resource type="Texture2D" uid="uid://b61i746ocooxt" path="res://Assets/house.png" id="1_05mvd"]
+[ext_resource type="Texture2D" uid="uid://dinmk0awcb48i" path="res://Assets/hause.png" id="1_7eq3h"]
 [ext_resource type="Script" uid="uid://bv3hnhg607che" path="res://peasant_building.gd" id="2_rgbn5"]
 [ext_resource type="PackedScene" uid="uid://bn4msd3lp00kx" path="res://building_mode.tscn" id="3_7eq3h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rgbn5"]
-size = Vector2(32, 18)
+size = Vector2(112, 100)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7eq3h"]
-size = Vector2(28, 8)
+size = Vector2(68, 20)
+
+[sub_resource type="Animation" id="Animation_dvfec"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_7eq3h"]
 resource_name = "building"
@@ -27,21 +42,6 @@ tracks/0/keys = {
 "values": [Vector2(1, 1), Vector2(0.9, 1), Vector2(1, 1), Vector2(1, 0.9)]
 }
 
-[sub_resource type="Animation" id="Animation_dvfec"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("..:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_c3gaj"]
 _data = {
 &"RESET": SubResource("Animation_dvfec"),
@@ -49,31 +49,30 @@ _data = {
 }
 
 [node name="PeasantBuilding" type="Sprite2D"]
-texture = ExtResource("1_05mvd")
+texture = ExtResource("1_7eq3h")
 script = ExtResource("2_rgbn5")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-collision_layer = 5
-collision_mask = 5
+collision_layer = 13
+collision_mask = 13
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(0, 7)
+position = Vector2(0, 11)
 shape = SubResource("RectangleShape2D_rgbn5")
 disabled = true
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(2, -6)
+position = Vector2(0, -49)
 shape = SubResource("RectangleShape2D_7eq3h")
 disabled = true
 
 [node name="SpawnPosition" type="Node2D" parent="."]
-position = Vector2(-8, 24)
+position = Vector2(0, 78)
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 8.0
 
 [node name="BuildingMode" parent="." node_paths=PackedStringArray("parent_building") instance=ExtResource("3_7eq3h")]
-building_area = Rect2(0, 0, 32, 32)
 parent_building = NodePath("..")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -85,9 +84,9 @@ autoplay = "RESET"
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
 offset_left = -16.0
-offset_top = -18.0
+offset_top = -71.0
 offset_right = 16.0
-offset_bottom = -14.0
+offset_bottom = -67.0
 show_percentage = false
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

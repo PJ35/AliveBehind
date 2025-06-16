@@ -1,0 +1,94 @@
+[gd_scene load_steps=9 format=3 uid="uid://ek2dm4ee03s8"]
+
+[ext_resource type="Script" uid="uid://hc7mpamsgr5o" path="res://bat.gd" id="1_tofr1"]
+[ext_resource type="Texture2D" uid="uid://c5txlwdjqueds" path="res://Assets/bat_all.png" id="2_tofr1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1tubu"]
+radius = 32.0156
+
+[sub_resource type="Animation" id="Animation_pb2o4"]
+resource_name = "flying"
+length = 1.2
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-1.49012e-08, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 4, 5, 6]
+}
+
+[sub_resource type="Animation" id="Animation_tofr1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_vobq3"]
+resource_name = "attacking"
+length = 1.6
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [8, 9, 10, 11, 12, 13, 14, 15]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tofr1"]
+_data = {
+&"RESET": SubResource("Animation_tofr1"),
+&"attacking": SubResource("Animation_vobq3"),
+&"flying": SubResource("Animation_pb2o4")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3tecl"]
+radius = 52.0384
+
+[node name="Bat" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 9
+script = ExtResource("1_tofr1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1tubu")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_tofr1")
+}
+autoplay = "flying"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_tofr1")
+hframes = 8
+vframes = 2
+
+[node name="Detect" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detect"]
+shape = SubResource("CircleShape2D_3tecl")

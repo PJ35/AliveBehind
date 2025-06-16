@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddut0l7idvf1s"]
+
+[ext_resource type="Texture2D" uid="uid://blrfy3mg2268d" path="res://Assets/cave.png" id="1_yhhov"]
+[ext_resource type="Script" uid="uid://dgq6df736yx3q" path="res://cave.gd" id="2_ads45"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ads45"]
+size = Vector2(169, 145)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_shk3w"]
+size = Vector2(146, 54)
+
+[node name="Cave" type="Sprite2D"]
+texture = ExtResource("1_yhhov")
+script = ExtResource("2_ads45")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 13
+collision_mask = 13
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-0.5, 29.5)
+shape = SubResource("RectangleShape2D_ads45")
+disabled = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-1, -70)
+shape = SubResource("RectangleShape2D_shk3w")
+disabled = true
+
+[node name="SpawnPosition" type="Node2D" parent="."]
+position = Vector2(16, 112)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 8.0
+autostart = true
